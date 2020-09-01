@@ -261,6 +261,7 @@ impl<AF: Unpin + AddressFamily> Future for FSM<AF> {
             Err(e) => error!("ResponderRecvPacket Error: {:?}", e),
         }
 
+        println!("BEFORE: {}", pinned.outgoing.len());
         while let Some(&(ref response, ref addr)) = pinned.outgoing.front() {
             trace!("sending packet to {:?}", addr);
 
@@ -272,6 +273,7 @@ impl<AF: Unpin + AddressFamily> Future for FSM<AF> {
             }
         }
         pinned.outgoing.pop_front();
+        println!("AFTER: {}", pinned.outgoing.len());
 
         Poll::Pending
     }
